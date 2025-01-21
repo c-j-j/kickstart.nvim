@@ -30,7 +30,7 @@ return {
           else
             gitsigns.nav_hunk 'prev'
           end
-        end, { desc = 'Jump to previous git [c]hange' })
+        end, { desc = 'Jump to previous git: [c]hange' })
 
         -- Actions
         -- visual mode
@@ -49,6 +49,10 @@ return {
         map('n', '<leader>hp', gitsigns.preview_hunk, { desc = 'git [p]review hunk' })
         map('n', '<leader>hb', gitsigns.blame_line, { desc = 'git [b]lame line' })
         map('n', '<leader>hd', gitsigns.diffthis, { desc = 'git [d]iff against index' })
+        map('n', '<leader>hm', function()
+          gitsigns.diffthis 'main'
+        end, { desc = 'git diff against [m]ain branch' })
+
         map('n', '<leader>hD', function()
           gitsigns.diffthis '@'
         end, { desc = 'git [D]iff against last commit' })
