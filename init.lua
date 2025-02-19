@@ -357,6 +357,7 @@ require('lazy').setup({
       },
       { 'nvim-telescope/telescope-ui-select.nvim' },
 
+      { 'benfowler/telescope-luasnip.nvim' }, -- Add this line
       -- Useful for getting pretty icons, but requires a Nerd Font.
       { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
     },
@@ -398,26 +399,36 @@ require('lazy').setup({
           ['ui-select'] = {
             require('telescope.themes').get_dropdown(),
           },
+          ['luasnip'] = {
+            require('telescope.themes').get_dropdown(),
+          },
         },
       }
 
       -- Enable Telescope extensions if they are installed
       pcall(require('telescope').load_extension, 'fzf')
       pcall(require('telescope').load_extension, 'ui-select')
+      pcall(require('telescope').load_extension, 'luasnip') -- Add this line
 
       -- See `:help telescope.builtin`
       local builtin = require 'telescope.builtin'
       vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
       vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
-      vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
-      vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = '[S]earch [S]elect Telescope' })
+      vim.keymap.set('n', '<leader>sf', function()
+        builtin.find_files { hidden = true, no_ignore = false, file_ignore_patterns = { '.git', 'node%_modules/.*' } }
+      end, { desc = '[S]earch [F]iles' })
+      -- vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = '[S]earch [S]elect Telescope' })
+      vim.keymap.set('n', '<leader>ss', require('telescope').extensions.luasnip.luasnip, { desc = '[S]earch [S]nippets' })
       vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
+      -- vim.keymap.set('n', '<leader>sn', require('telescope').extensions.luasnip.luasnip, { desc = '[S]earch [S]nippets' })
+      vim.keymap.set('v', '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
+      vim.keymap.set('n', '<leader>sc', builtin.command_history, { desc = '[S]earch [C]ommand history' })
       vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[S]earch by [G]rep' })
       vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
       vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
       vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
       vim.keymap.set('n', '<leader><leader>', function()
-        builtin.buffers { sort_lastused = true }
+        builtin.buffers { sort_mru = true, ignore_current_buffer = true }
       end, { desc = '[ ] Find existing buffers' })
       vim.keymap.set('n', '<leader>gs', builtin.git_status, { desc = '[G]it [Status]' })
 
@@ -479,10 +490,10 @@ require('lazy').setup({
     config = function(_, opts)
       -- local lspconfig = require 'lspconfig'
       -- for server, config in pairs(opts.servers) do
-      --   -- passing config.capabilities to blink.cmp merges with the capabilities in your
-      --   -- `opts[server].capabilities, if you've defined it
-      --   config.capabilities = require('blink.cmp').get_lsp_capabilities(config.capabilities)
-      --   lspconfig[server].setup(config)
+      -- passing config.capabilities to blink.cmp merges with the capabilities in your
+      -- `opts[server].capabilities, if you've defined it
+      -- config.capabilities = require('blink.cmp').get_lsp_capabilities(config.capabilities)
+      -- lspconfig[server].setup(config)
       -- end
       -- Brief aside: **What is LSP?**
       --
@@ -758,12 +769,12 @@ require('lazy').setup({
   --         -- `friendly-snippets` contains a variety of premade snippets.
   --         --    See the README about individual language/framework/plugin snippets:
   --         --    https://github.com/rafamadriz/friendly-snippets
-  --         -- {
-  --         --   'rafamadriz/friendly-snippets',
-  --         --   config = function()
-  --         --     require('luasnip.loaders.from_vscode').lazy_load()
-  --         --   end,
-  --         -- },
+  --         {
+  --           'rafamadriz/friendly-snippets',
+  --           config = function()
+  --             require('luasnip.loaders.from_vscode').lazy_load()
+  --           end,
+  --         },
   --       },
   --     },
   --     'saadparwaiz1/cmp_luasnip',
@@ -780,13 +791,17 @@ require('lazy').setup({
   --     local luasnip = require 'luasnip'
   --     luasnip.config.setup {}
   --
+  --     -- vim.keymap.set({ 'i' }, '<C-K>', function()
+  --     --   luasnip.expand()
+  --     -- end, { silent = true })
+  --
   --     cmp.setup {
   --       snippet = {
   --         expand = function(args)
   --           luasnip.lsp_expand(args.body)
   --         end,
   --       },
-  --       completion = { completeopt = 'menu,menuone,noinsert' },
+  --       completion = { completeopt = 'menu,menuone,noinsert', autocomplete = false },
   --
   --       -- For an understanding of why these mappings were
   --       -- chosen, you will need to read `:help ins-completion`
@@ -888,11 +903,13 @@ require('lazy').setup({
       require('mini.ai').setup { n_lines = 500 }
 
       -- Add/delete/replace surroundings (brackets, quotes, etc.)
-      --
+      -- (fsldfjsd)
       -- - saiw) - [S]urround [A]dd [I]nner [W]ord [)]Paren
       -- - sd'   - [S]urround [D]elete [']quotes
       -- - sr)'  - [S]urround [R]eplace [)] [']
       require('mini.surround').setup()
+      -- require('mini.completion').setup()
+      -- require('mini.pairs').setup()
 
       -- Simple and easy statusline.
       --  You could remove this setup call if you don't like it,
@@ -901,6 +918,7 @@ require('lazy').setup({
       -- set use_icons to true if you have a Nerd Font
       -- statusline.setup { use_icons = vim.g.have_nerd_font }
 
+      -- require('mini.completion').setup()
       -- You can configure sections in the statusline by overriding their
       -- default behavior. For example, here we set the section for
       -- cursor location to LINE:COLUMN
@@ -908,10 +926,10 @@ require('lazy').setup({
       -- statusline.section_location = function()
       -- return '%2l:%-2v'
       -- end
-
       -- ... and there is more!
       --  Check out: https://github.com/echasnovski/mini.nvim
     end,
+    dependencies = { { 'echasnovski/mini.icons', opts = {} } },
   },
   { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
