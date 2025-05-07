@@ -13,7 +13,7 @@ return {
     { 'j-hui/fidget.nvim',       opts = {} },
 
     -- Allows extra capabilities provided by blink.cmp
-    -- 'saghen/blink.cmp',
+    'saghen/blink.cmp',
   },
   config = function()
     vim.api.nvim_create_autocmd('LspAttach', {
@@ -64,7 +64,7 @@ return {
     -- See :help vim.diagnostic.Opts
     vim.diagnostic.config {
       severity_sort = true,
-      float = { border = 'rounded', source = 'if_many' },
+      float = { border = 'single' },
       underline = { severity = vim.diagnostic.severity.ERROR },
       signs = vim.g.have_nerd_font and {
         text = {
@@ -88,6 +88,7 @@ return {
         end,
       },
     }
+    local capabilities = require('blink.cmp').get_lsp_capabilities()
 
     local servers = {
       -- clangd = {},
@@ -129,6 +130,7 @@ return {
       handlers = {
         function(server_name)
           local server = servers[server_name] or {}
+          server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
           require('lspconfig')[server_name].setup(server)
         end,
       },
