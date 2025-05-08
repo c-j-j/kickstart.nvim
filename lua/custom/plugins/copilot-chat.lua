@@ -1,11 +1,10 @@
 return {
   {
     'CopilotC-Nvim/CopilotChat.nvim',
-    branch = 'main',
     cmd = 'CopilotChat',
-    enabled = false,
+    enabled = true,
     dependencies = {
-      { 'github/copilot.nvim' },
+      { 'github/copilot.vim' },
     },
 
     opts = function()
@@ -21,8 +20,8 @@ return {
       }
     end,
     keys = {
-      { '<c-s>', '<CR>', ft = 'copilot-chat', desc = 'Submit Prompt', remap = true },
-      { '<leader>a', '', desc = '+ai', mode = { 'n', 'v' } },
+      { '<c-s>',     '<CR>', ft = 'copilot-chat', desc = 'Submit Prompt', remap = true },
+      { '<leader>a', '',     desc = '+ai',        mode = { 'n', 'v' } },
       {
         '<leader>aa',
         function()
@@ -38,6 +37,14 @@ return {
         end,
         desc = 'Clear (CopilotChat)',
         mode = { 'n', 'v' },
+      },
+      {
+        "<leader>ap",
+        function()
+          require("CopilotChat").select_prompt()
+        end,
+        desc = "Prompt Actions (CopilotChat)",
+        mode = { "n", "v" },
       },
       {
         '<leader>aq',

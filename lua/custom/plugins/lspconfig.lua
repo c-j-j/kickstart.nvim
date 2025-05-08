@@ -29,6 +29,19 @@ return {
           return client:supports_method(method, bufnr)
         end
 
+        local map = function(keys, func, desc, mode)
+          mode = mode or 'n'
+          vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
+        end
+
+        -- Rename the variable under your cursor.
+        --  Most Language Servers support renaming across files, etc.
+        map('grn', vim.lsp.buf.rename, '[R]e[n]ame')
+        map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
+        map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
+
+
+
         -- The following two autocommands are used to highlight references of the
         -- word under your cursor when your cursor rests there for a little while.
         --    See `:help CursorHold` for information about when this is executed
@@ -88,6 +101,7 @@ return {
         end,
       },
     }
+
     local capabilities = require('blink.cmp').get_lsp_capabilities()
 
     local servers = {
