@@ -39,6 +39,7 @@ return {
         map('grn', vim.lsp.buf.rename, '[R]e[n]ame')
         map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
         map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
+        map('gh', vim.diagnostic.open_float, '[G]oto [H]over Diagnostic')
 
 
 

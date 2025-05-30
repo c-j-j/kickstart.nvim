@@ -276,7 +276,10 @@ require('lazy').setup({
         -- python = { "isort", "black" },
         --
         -- You can use 'stop_after_first' to run the first available formatter from the list
-        -- javascript = { "prettierd", "prettier", stop_after_first = true },
+        javascript = { "prettierd", "eslint_d", stop_after_first = false },
+        javascriptreact = { "prettierd", "eslint_d", stop_after_first = false },
+        typescript = { "prettierd", "eslint_d", stop_after_first = false },
+        typescriptreact = { "prettierd", "eslint_d", stop_after_first = false },
       },
     },
   },
@@ -375,6 +378,8 @@ require('lazy').setup({
     },
   },
 })
+
+require('custom.find_nx_test_cmd')
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
