@@ -14,7 +14,13 @@ return {
             {
               'filename',
               path = 1,
-            }
+            },
+            {
+              'bufnr',
+              fmt = function(bufnr)
+                return tostring(bufnr)
+              end,
+            },
           },
           lualine_x = {
             {

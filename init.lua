@@ -221,10 +221,12 @@ require('lazy').setup({
 
       -- Document existing key chains
       spec = {
+        { '<leader>g', group = '[G]it' },
         { '<leader>s', group = '[S]earch' },
         { '<leader>t', group = '[T]oggle' },
         { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
         { '<leader>c', group = '[C]ode',     mode = { 'n' } },
+        { '<leader>y', group = '[Y]ank',     mode = { 'n' } },
       },
     },
   },
@@ -380,6 +382,7 @@ require('lazy').setup({
 })
 
 require('custom.find_nx_test_cmd')
+require 'custom.keymaps'
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et

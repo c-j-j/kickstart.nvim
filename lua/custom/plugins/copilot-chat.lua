@@ -14,9 +14,18 @@ return {
         auto_insert_mode = true,
         question_header = '  ' .. user .. ' ',
         answer_header = '  Copilot ',
-        window = {
-          width = 0.4,
-        },
+        mappings = {
+          show_diff = {
+            full_diff = true
+          },
+          close = {
+            normal = '<C-q>',
+            insert = '<C-c>',
+          },
+        }
+        -- window = {
+        --   width = 0.4,
+        -- },
       }
     end,
     keys = {
@@ -45,6 +54,14 @@ return {
         end,
         desc = "Prompt Actions (CopilotChat)",
         mode = { "n", "v" },
+      },
+      {
+        '<leader>af',
+        function()
+          require('CopilotChat').add_context('buffer')
+        end,
+        desc = 'Add Buffer to CopilotChat Context',
+        mode = { 'n', 'v' },
       },
       {
         '<leader>aq',
