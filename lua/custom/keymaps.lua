@@ -20,5 +20,13 @@ wk.add({
       print("Yanked buffer: " .. result)
     end,
     desc = "Yank Buffer"
+  },
+  {
+    "<leader>yt",
+    function()
+      local test_cmd = require('my_commands')
+      test_cmd.CopyTestCmd()
+    end,
+    desc = "Yank Test command"
   }
 })
