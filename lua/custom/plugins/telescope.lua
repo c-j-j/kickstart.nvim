@@ -72,10 +72,16 @@ return { -- Fuzzy Finder (files, lsp, etc)
       builtin.find_files { hidden = true, no_ignore = false, file_ignore_patterns = { '.git', 'node%_modules/.*' } }
     end, { desc = '[S]earch [F]iles' })
     vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = '[S]earch [S]elect Telescope' })
-    vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
-    vim.keymap.set('v', '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
+    vim.keymap.set('n', '<leader>sw', function()
+      builtin.grep_string { additional_args = { '--hidden' } }
+    end, { desc = '[S]earch current [W]ord' })
+    vim.keymap.set('v', '<leader>sw', function()
+      builtin.grep_string { additional_args = { '--hidden' } }
+    end, { desc = '[S]earch current [W]ord' })
     vim.keymap.set('n', '<leader>sc', builtin.command_history, { desc = '[S]earch [C]ommand history' })
-    vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[S]earch by [G]rep' })
+    vim.keymap.set('n', '<leader>sg', function()
+      builtin.live_grep { additional_args = { '--hidden' } }
+    end, { desc = '[S]earch by [G]rep' })
     vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
     vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
     vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
@@ -99,6 +105,7 @@ return { -- Fuzzy Finder (files, lsp, etc)
       builtin.live_grep {
         grep_open_files = true,
         prompt_title = 'Live Grep in Open Files',
+        additional_args = { '--hidden' },
       }
     end, { desc = '[S]earch [/] in Open Files' })
 

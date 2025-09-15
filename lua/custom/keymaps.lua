@@ -28,5 +28,44 @@ wk.add({
       test_cmd.CopyTestCmd()
     end,
     desc = "Yank Test command"
+  },
+  {
+    "<leader>yr",
+    function()
+      local path = vim.fn.expand("%:.")
+      vim.fn.setreg("+", path)
+      print("Yanked relative path: " .. path)
+    end,
+    desc = "Yank Relative path"
+  },
+  -- Diffview shortcuts
+  {
+    "<leader>gd",
+    function()
+      local file = vim.fn.expand("%")
+      if file == "" then
+        print("No file in current buffer")
+        return
+      end
+      vim.cmd("DiffviewOpen main -- " .. file)
+    end,
+    desc = "Diff current file with main"
+  },
+  {
+    "<leader>gh",
+    function()
+      local file = vim.fn.expand("%")
+      if file == "" then
+        print("No file in current buffer")
+        return
+      end
+      vim.cmd("DiffviewFileHistory " .. file)
+    end,
+    desc = "Show file history"
+  },
+  {
+    "<leader>gD",
+    "<cmd>DiffviewOpen main<cr>",
+    desc = "Diff all files with main"
   }
 })
