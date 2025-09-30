@@ -37,10 +37,10 @@ return {
         -- Rename the variable under your cursor.
         --  Most Language Servers support renaming across files, etc.
         map('grn', vim.lsp.buf.rename, '[R]e[n]ame')
-        map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
+        -- map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
         map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
         map('gh', vim.diagnostic.open_float, '[G]oto [H]over Diagnostic')
-        map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
+        -- map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
 
         -- The following two autocommands are used to highlight references of the
         -- word under your cursor when your cursor rests there for a little while.
