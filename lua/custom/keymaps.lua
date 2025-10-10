@@ -22,12 +22,12 @@ wk.add({
     desc = "Yank Buffer"
   },
   {
-    "<leader>yt",
+    "<leader>yu",
     function()
       local test_cmd = require('my_commands')
       test_cmd.CopyTestCmd()
     end,
-    desc = "Yank Test command"
+    desc = "Yank Unit Test command"
   },
   {
     "<leader>yr",
@@ -37,6 +37,14 @@ wk.add({
       print("Yanked relative path: " .. path)
     end,
     desc = "Yank Relative path"
+  },
+  {
+    "<leader>yt",
+    function()
+      local ts_cmd = require('my_commands')
+      ts_cmd.CopyTsCheckCmd()
+    end,
+    desc = "Yank TypeScript check command"
   },
   -- Diffview shortcuts
   {
