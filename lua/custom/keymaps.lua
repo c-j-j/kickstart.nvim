@@ -75,5 +75,10 @@ wk.add({
     "<leader>gD",
     "<cmd>DiffviewOpen main<cr>",
     desc = "Diff all files with main"
+  },
+  {
+    "<leader>gq",
+    "<cmd>DiffviewClose<cr>",
+    desc = "Close Diffview"
   }
 })
