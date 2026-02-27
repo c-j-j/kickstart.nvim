@@ -39,6 +39,7 @@ return {
         map('grn', vim.lsp.buf.rename, '[R]e[n]ame')
         -- map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
         map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
+        map('K', vim.lsp.buf.hover, 'Hover Documentation')
         map('gh', vim.diagnostic.open_float, '[G]oto [H]over Diagnostic')
         -- map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
 
@@ -75,9 +76,13 @@ return {
 
     -- Diagnostic Config
     -- See :help vim.diagnostic.Opts
+    local float_border = 'rounded'
+    vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, { border = float_border })
+    vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = float_border })
+
     vim.diagnostic.config {
       severity_sort = true,
-      float = { border = 'single' },
+      float = { border = float_border },
       underline = { severity = vim.diagnostic.severity.ERROR },
       signs = vim.g.have_nerd_font and {
         text = {

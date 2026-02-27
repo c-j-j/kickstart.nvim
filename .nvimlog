@@ -1,0 +1,2 @@
+WRN 2026-02-12T13:49:38.704 ?.90903    server_start:193: Failed to start server: operation not permitted: /var/folders/ty/wn4chdy14j3d7wq9ml9t9jp00000gp/T/nvim.cjordan/MoLwJa/nvim.90903.0
+WRN 2026-02-12T13:49:43.239 ?.91259    server_start:193: Failed to start server: operation not permitted: /var/folders/ty/wn4chdy14j3d7wq9ml9t9jp00000gp/T/nvim.cjordan/Cvzfes/nvim.91259.0
