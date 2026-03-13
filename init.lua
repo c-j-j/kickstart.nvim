@@ -91,7 +91,6 @@ P.S. You can delete this when you're done too. It's your config now! :)
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
-
 -- Set to true if you have a Nerd Font installed and selected in the terminal
 vim.g.have_nerd_font = true
 
@@ -278,13 +277,17 @@ require('lazy').setup({
         -- python = { "isort", "black" },
         --
         -- You can use 'stop_after_first' to run the first available formatter from the list
-        javascript = { "prettierd", "eslint_d", stop_after_first = false },
-        javascriptreact = { "prettierd", "eslint_d", stop_after_first = false },
-        typescript = { "prettierd", "eslint_d", stop_after_first = false },
-        typescriptreact = { "prettierd", "eslint_d", stop_after_first = false },
+        javascript = { 'oxfmt', 'prettierd', stop_after_first = true },
+        javascriptreact = { 'oxfmt', 'prettierd', stop_after_first = true },
+        typescript = { 'oxfmt', 'prettierd', stop_after_first = true },
+        typescriptreact = { 'oxfmt', 'prettierd', stop_after_first = true },
       },
     },
   },
+  --javascript = { 'oxfmt', stop_after_first = false },
+  --javascriptreact = { 'oxfmt', stop_after_first = false },
+  --typescript = { 'oxfmt', stop_after_first = false },
+  --typescriptreact = { 'oxfmt', stop_after_first = false },
   { -- You can easily change to a different colorscheme.
     -- Change the name of the colorscheme plugin below, and then
     -- change the command in the config to whatever the name of that colorscheme is.
@@ -313,7 +316,23 @@ require('lazy').setup({
     main = 'nvim-treesitter.configs', -- Sets main module to use for opts
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
     opts = {
-      ensure_installed = { 'bash', 'c', 'diff', 'html', 'javascript', 'kotlin', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'tsx', 'typescript', 'vim', 'vimdoc' },
+      ensure_installed = {
+        'bash',
+        'c',
+        'diff',
+        'html',
+        'javascript',
+        'kotlin',
+        'lua',
+        'luadoc',
+        'markdown',
+        'markdown_inline',
+        'query',
+        'tsx',
+        'typescript',
+        'vim',
+        'vimdoc',
+      },
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {
@@ -381,7 +400,7 @@ require('lazy').setup({
   },
 })
 
-require('custom.find_nx_test_cmd')
+require 'custom.find_nx_test_cmd'
 require 'custom.keymaps'
 
 -- The line beneath this is called `modeline`. See `:help modeline`
