@@ -22,14 +22,6 @@ wk.add({
     desc = "Yank Buffer"
   },
   {
-    "<leader>yu",
-    function()
-      local test_cmd = require('my_commands')
-      test_cmd.CopyTestCmd()
-    end,
-    desc = "Yank Unit Test command"
-  },
-  {
     "<leader>yr",
     function()
       local path = vim.fn.expand("%:.")
@@ -37,48 +29,5 @@ wk.add({
       print("Yanked relative path: " .. path)
     end,
     desc = "Yank Relative path"
-  },
-  {
-    "<leader>yt",
-    function()
-      local ts_cmd = require('my_commands')
-      ts_cmd.CopyTsCheckCmd()
-    end,
-    desc = "Yank TypeScript check command"
-  },
-  -- Diffview shortcuts
-  {
-    "<leader>gd",
-    function()
-      local file = vim.fn.expand("%")
-      if file == "" then
-        print("No file in current buffer")
-        return
-      end
-      vim.cmd("DiffviewOpen main -- " .. file)
-    end,
-    desc = "Diff current file with main"
-  },
-  {
-    "<leader>gh",
-    function()
-      local file = vim.fn.expand("%")
-      if file == "" then
-        print("No file in current buffer")
-        return
-      end
-      vim.cmd("DiffviewFileHistory " .. file)
-    end,
-    desc = "Show file history"
-  },
-  {
-    "<leader>gD",
-    "<cmd>DiffviewOpen main<cr>",
-    desc = "Diff all files with main"
-  },
-  {
-    "<leader>gq",
-    "<cmd>DiffviewClose<cr>",
-    desc = "Close Diffview"
   }
 })
