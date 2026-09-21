@@ -1,9 +1,6 @@
 vim.pack.add { 'https://github.com/stevearc/oil.nvim' }
-vim.pack.add { 'https://github.com/echasnovski/mini.icons' }
-
-if vim.g.have_nerd_font then
-  vim.pack.add { 'https://github.com/nvim-tree/nvim-web-devicons' }
-end
+-- Icons come from mini.icons, already installed and set up in init.lua
+-- (with a nvim-web-devicons compat shim via MiniIcons.mock_nvim_web_devicons()).
 
 require('oil').setup {
   -- Oil will take over directory buffers (e.g. `vim .` or `:e src/`)
