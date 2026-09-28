@@ -307,13 +307,6 @@ do
         return
       end
 
-      if name == 'LuaSnip' then
-        if vim.fn.has 'win32' ~= 1 and vim.fn.executable 'make' == 1 then
-          run_build(name, { 'make', 'install_jsregexp' }, ev.data.path)
-        end
-        return
-      end
-
       if name == 'nvim-treesitter' then
         if not ev.data.active then
           vim.cmd.packadd 'nvim-treesitter'
@@ -390,10 +383,6 @@ do
   -- Like many other themes, this one has different styles, and you could load
   -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
   vim.cmd.colorscheme 'tokyonight-night'
-
-  -- Highlight todo, notes, etc in comments
-  vim.pack.add { gh 'folke/todo-comments.nvim' }
-  require('todo-comments').setup { signs = false }
 
   -- [[ mini.nvim ]]
   --  A collection of various small independent plugins/modules
@@ -705,13 +694,9 @@ do
     -- ts_ls = {},
     vtsls = {},
 
-    stylua = {}, -- Used to format Lua code
-
     -- Special Lua Config, as recommended by neovim help docs
     lua_ls = {
       on_init = function(client)
-        client.server_capabilities.documentFormattingProvider = false -- Disable formatting (formatting is done by stylua)
-
         if client.workspace_folders then
           local path = client.workspace_folders[1].name
           if path ~= vim.fn.stdpath 'config' and (vim.uv.fs_stat(path .. '/.luarc.json') or vim.uv.fs_stat(path .. '/.luarc.jsonc')) then
@@ -735,12 +720,6 @@ do
           },
         })
       end,
-      ---@type lspconfig.settings.lua_ls
-      settings = {
-        Lua = {
-          format = { enable = false }, -- Disable formatting (formatting is done by stylua)
-        },
-      },
     },
   }
 
@@ -776,41 +755,11 @@ end
 
 -- ============================================================
 -- SECTION 6: FORMATTING
--- conform.nvim setup and keymap
+-- Format via whatever LSP server is attached (no conform.nvim)
 -- ============================================================
 do
-  -- [[ Formatting ]]
-  vim.pack.add { gh 'stevearc/conform.nvim' }
-  require('conform').setup {
-    notify_on_error = false,
-    format_on_save = function(bufnr)
-      -- You can specify filetypes to autoformat on save here:
-      local enabled_filetypes = {
-        -- lua = true,
-        -- python = true,
-      }
-      if enabled_filetypes[vim.bo[bufnr].filetype] then
-        return { timeout_ms = 500 }
-      else
-        return nil
-      end
-    end,
-    default_format_opts = {
-      lsp_format = 'fallback', -- Use external formatters if configured below, otherwise use LSP formatting. Set to `false` to disable LSP formatting entirely.
-    },
-    -- You can also specify external formatters in here.
-    formatters_by_ft = {
-      -- rust = { 'rustfmt' },
-      -- Conform can also run multiple formatters sequentially
-      -- python = { "isort", "black" },
-      --
-      -- You can use 'stop_after_first' to run the first available formatter from the list
-      -- javascript = { "prettierd", "prettier", stop_after_first = true },
-    },
-  }
-
   vim.keymap.set({ 'n', 'v' }, '<leader>f', function()
-    require('conform').format { async = true }
+    vim.lsp.buf.format { async = true }
   end, { desc = '[F]ormat buffer' })
 end
 
@@ -819,18 +768,6 @@ end
 -- blink.cmp and luasnip setup
 -- ============================================================
 do
-  -- [[ Snippet Engine ]]
-
-  -- NOTE: You can also specify plugin using a version range for its git tag.
-  --  See `:help vim.version.range()` for more info
-  vim.pack.add { { src = gh 'L3MON4D3/LuaSnip', version = vim.version.range '2.*' } }
-  require('luasnip').setup {}
-
-  -- `friendly-snippets` contains a variety of premade snippets.
-  --    See the README about individual language/framework/plugin snippets:
-  --    https://github.com/rafamadriz/friendly-snippets
-  --
-  -- vim.pack.add { gh 'rafamadriz/friendly-snippets' }
   -- require('luasnip.loaders.from_vscode').lazy_load()
 
   -- [[ Autocomplete Engine ]]
@@ -877,10 +814,9 @@ do
     },
 
     sources = {
-      default = { 'lsp', 'path', 'snippets' },
+      default = { 'lsp', 'path' },
     },
 
-    snippets = { preset = 'luasnip' },
 
     -- Blink.cmp includes an optional, recommended rust fuzzy matcher,
     -- which automatically downloads a prebuilt binary when enabled.

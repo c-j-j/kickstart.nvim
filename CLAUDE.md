@@ -59,9 +59,9 @@ This is a Neovim configuration based on kickstart.nvim, with extensive customiza
 ## Development Configuration
 
 ### Code Formatting
-- Uses conform.nvim for formatting
-- Format-on-save is opt-in per filetype in `init.lua` (`formatters_by_ft` / `enabled_filetypes`); currently no filetypes are enabled by default
-- Manual format with `<leader>f`
+- No formatter plugin (conform.nvim was removed — it had no formatters configured and was doing nothing beyond bare LSP formatting)
+- `<leader>f` calls `vim.lsp.buf.format({ async = true })` directly, using whatever LSP server is attached to the buffer
+- No format-on-save
 
 ### Key Plugin Stack
 - **LSP**: Native LSP with Mason for language server management (includes `vtsls` for TypeScript/JavaScript)
@@ -93,5 +93,7 @@ When modifying this configuration:
 - No NX/monorepo tooling: the config previously had NX-specific test/typecheck helpers (`lua/my_commands.lua`, bound to `<leader>yu`/`<leader>yt`); these were removed since the file no longer existed and NX is no longer in use.
 - No Diffview: keymaps referencing `:DiffviewOpen`/`:DiffviewFileHistory`/`:DiffviewClose` were removed since the plugin was never actually installed.
 - No AI assistant is currently wired in. `vim.g.copilot_enabled = false` in `options.lua` is a leftover setting for the plain GitHub Copilot plugin, which isn't installed. CopilotChat is not installed or configured.
+- No conform.nvim: it was installed with no formatters configured and format-on-save disabled for every filetype, so it added nothing over native LSP formatting. Removed along with the `stylua` Mason entry (which conform never actually invoked) and `lua_ls`'s formatting-capability override; `<leader>f` now calls `vim.lsp.buf.format()` directly.
+- No todo-comments.nvim: it only provided passive TODO/FIXME/NOTE highlighting (signs were off, and no keymap called its search commands), and wasn't being used.
 
 The configuration is designed for general JavaScript/TypeScript development with LSP, completion, treesitter, and git workflow support.
